@@ -69,12 +69,13 @@ class payment(models.Model):
 
 class product(models.Model):
     product_code = models.CharField(max_length=10, primary_key=True)
-    product_name = models.CharField(max_length=50, null=True)
-    product_type = models.CharField(max_length=20, null=True)
-    product_brand = models.CharField(max_length=20, null=True)
+    product_name = models.CharField(max_length=50, primary_key=True)
+    product_type = models.CharField(max_length=20, primary_key=True)
+    product_brand = models.CharField(max_length=20, primary_key=True)
     price = models.FloatField(null=True, blank=True)
     class Meta:
         db_table = "product"
+        unique_together = (("product_code", "product_name"),)
         managed = False
     def __str__(self):
         return "%s %s" % (self.product_code)    
@@ -86,6 +87,7 @@ class product_warehouse(models.Model):
     unit = models.FloatField(null=True, blank=True)
     class Meta:
         db_table = "product_warehouse"
+        unique_together = (("code", "product_name"),)
         managed = False
     def __str__(self):
         return "%s %s" % (self.code)  
@@ -96,6 +98,7 @@ class promotion(models.Model):
     description = models.CharField(max_length=100, null=True)
     class Meta:
         db_table = "promotion"
+        unique_together = (("product_code", "product_name"),)
         managed = False
     def __str__(self):
         return "%s %s" % (self.product_code)  
