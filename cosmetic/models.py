@@ -57,8 +57,8 @@ class  order(models.Model):
 
 class payment(models.Model):
     payment_method = models.CharField(max_length=20, primary_key=True)
-    description = models.CharField(max_length=20, null=True)
-    order_code = models.CharField(max_length=10, null=True)
+    description = models.CharField(max_length=20)
+    order_code = models.CharField(max_length=10)
     order_sum_quantity = models.FloatField(null=True, blank=True)
     order_total_price = models.FloatField(null=True, blank=True)
     class Meta:
@@ -69,9 +69,9 @@ class payment(models.Model):
 
 class product(models.Model):
     product_code = models.CharField(max_length=10, primary_key=True)
-    product_name = models.CharField(max_length=50, null=True)
-    product_type = models.CharField(max_length=20, null=True)
-    product_brand = models.CharField(max_length=20, null=True)
+    product_name = models.CharField(max_length=50)
+    product_type = models.CharField(max_length=20)
+    product_brand = models.CharField(max_length=20)
     price = models.FloatField(null=True, blank=True)
     class Meta:
         db_table = "product"
