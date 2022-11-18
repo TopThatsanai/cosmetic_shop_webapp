@@ -10,9 +10,29 @@ from django.utils.decorators import method_decorator
 from django.forms.models import model_to_dict
 from django.db.models import Max
 from django.db import connection
+from .models import *
 import json
+import re
 
 # Create your views here.
 def index(request):
     data = {}
     return render(request, 'index.html', data)
+
+class customerlist(View):
+    def get(self, request):
+        customers = list(customer.objects.all().values())
+        data = dict()
+        data['customers'] = customers
+
+        return JsonResponse(data)
+
+class productlist(View):
+    def get(self, request):
+        products = list(product.objects.all().values())
+        data = dict()
+        data['products'] = products
+
+        return JsonResponse(data)
+
+
