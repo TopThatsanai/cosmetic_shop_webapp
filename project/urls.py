@@ -31,5 +31,6 @@ urlpatterns = [
     path('Powderpuff', views.powderpuff, name='powder_puff'),
     path('Foundation', views.foundation, name='foundation'),
     path('Promotion', views.Promotion, name = 'promotion'),
-    path('Gucci', views.gucci, name = 'gucci')
+    path('Gucci', views.gucci, name = 'gucci'),
+    path('payment', views.Payment, name = 'payment')
 ]

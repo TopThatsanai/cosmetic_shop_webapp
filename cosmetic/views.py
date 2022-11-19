@@ -59,6 +59,10 @@ def gucci(request):
     data= {}
     return render(request, 'gucci.html', data)
 
+def Payment(request):
+    data = {}
+    return render(request, 'payment.html', data)
+
 class customerlist(View):
     def get(self, request):
         customers = list(customer.objects.all().values())
