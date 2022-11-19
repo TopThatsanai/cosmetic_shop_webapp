@@ -19,6 +19,14 @@ def index(request):
     data = {}
     return render(request, 'index.html', data)
 
+def signup(request):
+    data = {}
+    return render(request, 'sign_up.html', data)
+
+def signin(request):
+    data ={}
+    return render(request, 'sign_in.html', data)
+
 class customerlist(View):
     def get(self, request):
         customers = list(customer.objects.all().values())

@@ -82,7 +82,7 @@ class product(models.Model):
 
 class product_warehouse(models.Model):
     code = models.CharField(max_length=10, primary_key=True)
-    product_name = models.CharField(max_length=50, primary_key=True)
+    product_name = models.CharField(max_length=50)
     quantity =models.FloatField(null=True, blank=True) 
     unit = models.FloatField(null=True, blank=True)
     class Meta:
@@ -94,7 +94,7 @@ class product_warehouse(models.Model):
 
 class promotion(models.Model):
     product_code = models.CharField(max_length=10, primary_key=True)
-    product_name = models.CharField(max_length=20, primary_key=True)
+    product_name = models.CharField(max_length=20)
     description = models.CharField(max_length=100, null=True)
     class Meta:
         db_table = "promotion"

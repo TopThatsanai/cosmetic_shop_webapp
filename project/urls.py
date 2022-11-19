@@ -21,4 +21,7 @@ from cosmetic import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('index', views.index),
+    path('signUp', views.signup, name='sign_up'),
+    path('signIn', views.signin, name='sign_in'),
 ]
