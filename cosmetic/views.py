@@ -27,6 +27,38 @@ def signin(request):
     data ={}
     return render(request, 'sign_in.html', data)
 
+def Promotion(request):
+    data = {}
+    return render(request, 'promotion.html', data)
+
+def lipstick(request):
+    data={}
+    return render(request, 'lipstick.html', data)
+
+def eyeLiner(request):
+    data={}
+    return render(request, 'eyeliner.html', data)
+
+def mascara(request):
+    data={}
+    return render(request, 'mascara.html', data)
+
+def eyebrownpencil(request):
+    data={}
+    return render(request, 'eyebrown_pencil.html', data)
+
+def powderpuff(request):
+    data={}
+    return render(request, 'powder_puff.html', data)
+
+def foundation(request):
+    data={}
+    return render(request, 'foundation.html', data)
+
+def gucci(request):
+    data= {}
+    return render(request, 'gucci.html', data)
+
 class customerlist(View):
     def get(self, request):
         customers = list(customer.objects.all().values())

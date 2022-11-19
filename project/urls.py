@@ -24,4 +24,12 @@ urlpatterns = [
     path('index', views.index),
     path('signUp', views.signup, name='sign_up'),
     path('signIn', views.signin, name='sign_in'),
+    path('Lipstick', views.lipstick, name='lipstick'),
+    path('Eyeliner', views.eyeLiner, name='eyeliner'),
+    path('Mascara', views.mascara, name='mascara'),
+    path('Eyebrownpencil', views.eyebrownpencil, name='eyebrown_pencil'),
+    path('Powderpuff', views.powderpuff, name='powder_puff'),
+    path('Foundation', views.foundation, name='foundation'),
+    path('Promotion', views.Promotion, name = 'promotion'),
+    path('Gucci', views.gucci, name = 'gucci')
 ]
