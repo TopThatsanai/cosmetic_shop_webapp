@@ -15,7 +15,7 @@ class  customer(models.Model):
     order_sum_quantity = models.FloatField(null=True)
     order_total_price = models.FloatField(null=True)
     class Meta:
-        db_table = "customer_code"
+        db_table = "customer"
         managed = False
     def str(self):
         return self.customer_code
@@ -27,7 +27,7 @@ class  delivery(models.Model):
     order_sum_quantity = models.FloatField(null=True)
     order_total_price = models.FloatField(null=True)
     class Meta:
-        db_table = "delivery_type"
+        db_table = "delivery"
         managed = False
     def str(self):
         return self.delivery_type
@@ -36,7 +36,7 @@ class  discount(models.Model):
     product_code = models.CharField(max_length=10,primary_key=True)
     quantity = models.FloatField(null=True)
     class Meta:
-        db_table = "delivery_type"
+        db_table = "discount"
         managed = False
     def str(self):
         return self.delivery_type
@@ -49,7 +49,7 @@ class  order(models.Model):
     payment_method = models.CharField(max_length=20)
     delivery_type = models.CharField(max_length=50)
     class Meta:
-        db_table = "delivery_type"
+        db_table = "order"
         managed = False
     def str(self):
         return self.delivery_type

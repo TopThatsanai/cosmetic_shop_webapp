@@ -32,5 +32,14 @@ urlpatterns = [
     path('Foundation', views.foundation, name='foundation'),
     path('Promotion', views.Promotion, name = 'promotion'),
     path('Gucci', views.gucci, name = 'gucci'),
-    path('payment', views.Payment, name = 'payment')
+    path('cart', views.Cart, name = 'cart'),
+    path('product/list', views.ProductList.as_view(), name='product_list'),
+    path('customer/list', views.CustomerList.as_view(),name='customer_list'),
+    path('customer/detail/<customer_code>', views.CustomerDetail.as_view(), name='customer_detial'),
+    path('payment/list', views.PaymentList.as_view(), name='payment_list'),
+    path('deliverly/list', views.DeliveriyList.as_view(), name='deliverly_list'),
+    path('productWarehouse/list', views.WarehouseList.as_view(), name='productWarehouse_list'),
+    path('order/list', views.OrderList.as_view(), name='order_list'),
+    path('order/detial', views.OrderDetail.as_view(), name='order_detial'),
+    
 ]

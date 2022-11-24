@@ -59,11 +59,11 @@ def gucci(request):
     data= {}
     return render(request, 'gucci.html', data)
 
-def Payment(request):
+def Cart(request):
     data = {}
-    return render(request, 'payment.html', data)
+    return render(request, 'cart_test.html', data)
 
-class customerlist(View):
+class CustomerList(View):
     def get(self, request):
         customers = list(customer.objects.all().values())
         data = dict()
@@ -71,7 +71,7 @@ class customerlist(View):
 
         return JsonResponse(data)
 
-class productlist(View):
+class ProductList(View):
     def get(self, request):
         products = list(product.objects.all().values())
         data = dict()
@@ -79,4 +79,51 @@ class productlist(View):
 
         return JsonResponse(data)
 
+class CustomerDetail(View):
+    def get(self, request, customer_code):
+        customers = list(customer.objects.filter(customer_code=customer_code).values())
+        data = dict()
+        data['customers'] = customers
+
+        return JsonResponse(data)
+
+class PaymentList(View):
+    def get(self, request):
+        payments = list(payment.objects.all().values())
+        data = dict()
+        data['payments'] = payments
+
+        return JsonResponse(data)
+
+class DeliveriyList(View):
+    def get(self, request):
+        deliverlys = list(delivery.objects.all().values())
+        data = dict()
+        data['deliverlys'] = deliverlys
+
+        return JsonResponse(data)
+
+class WarehouseList(View):
+    def get(self, request):
+        warehouses = list(product_warehouse.objects.all().values())
+        data = dict()
+        data['product_warehouses'] = warehouses
+
+        return JsonResponse(data)
+
+class OrderList(View):
+    def get(self, request):
+        orders = list(order.objects.all().values())
+        data = dict()
+        data['orders'] = orders
+
+        return JsonResponse(data)
+
+class OrderDetail(View):
+    def get(self, request, order_code):
+        orders = list(order.objects.filter(order_code=order_code).values())
+        data = dict()
+        data['orders'] = orders
+
+        return JsonResponse(data)
 
