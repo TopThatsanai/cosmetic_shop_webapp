@@ -1,6 +1,17 @@
+
 var ROW_NUMBER = 5;
 
 $(document).ready( function () {
+
+    // /* set up text box inovice data to datepicker, it popup calendar after click text box */
+    // $("#txt_InvoiceDate").datepicker({ 
+    //     dateFormat: 'dd/mm/yy' 
+    // });
+    
+    // /* When click button calendar, call datepicker show, it popup calendar after click  button */
+    // $('#btn_InvoiceDate').click(function() {
+    //     $('#txt_InvoiceDate').datepicker('show');
+    // });
 
     /* Add one row to table (in last row), When click button '+' in header of table */
     $('.table-add').click(function () {
@@ -54,13 +65,31 @@ $(document).ready( function () {
             success: function  (data) {
                 if (data.customers.length > 0) {        // check data not empty customer
                     $('#txt_CustomerCode').val(data.customers[0].customer_code);    // put to text box
-                    $('#txt_CustomerFName').val(data.customers[0].fname);            // put to text box (label)
+                    $('#txt_CustomerName').val(data.customers[0].fname);             // put to text box (label)
                 } else {
-                    $('#txt_CustomerFName').val('');   // if can't find customer_name, reset text box
+                    $('#txt_CustomerName').val('');    // if can't find customer_name, reset text box
                 }
             },
             error: function (xhr, status, error) {
-                $('#txt_CustomerFName').val('');      // if something error, reset text box
+                $('#txt_CustomerName').val('');         // if something error, reset text box
+            }
+        });
+    });
+
+    /* Get Customer Name when type in text box customer code */
+    $('#txt_PaymentMethod').change (function () {
+        var payment_method = $(this).val().trim();
+
+        $.ajax({
+            url:  '/payment/detail/' + payment_method,
+            type:  'get',
+            dataType:  'json',
+            success: function  (data) {
+                // $('#txt_PaymentMethodCode').val(data.payments[0].payment_method);
+                $('#txt_PaymentMethod').val(data.payments[0].description);
+            },
+            error: function (xhr, status, error) {
+                $('#txt_PaymentMethod').val('');
             }
         });
     });
@@ -77,19 +106,19 @@ $(document).ready( function () {
                 var i = 1;
                 data.customers.forEach(customer => {    // loop each result of customers to create table rows
                     rows += `
-                    <tr class="d-flex">
-                        <td class='col-1'>${i++}</td>
-                        <td class='col-3'><a class='a_click' href='#'>${customer.customer_code}</a></td>
-                        <td class='col-5'>${customer.fname}</td>
-                        <td class='col-3'></td>
+                    <tr>
+                        <td>${i++}</td>
+                        <td><a class='a_click' href='#'>${customer.customer_code}</a></td>
+                        <td>${customer.fname}</td>
+                        <td>${customer.lname}</td>
                         <td class='hide'></td>
                     </tr>`;
                 });
                 $('#table_modal > tbody').html(rows);   // set new table rows to table body (tbody) of popup
 
                 $('#model_header_1').text('Customer Code');     // set header of popup
-                $('#model_header_2').text('Customer Name');
-                $('#model_header_3').text('Note');
+                $('#model_header_2').text('First Name');
+                $('#model_header_3').text('Last Name');
 
                 $('#txt_modal_param').val('customer_code');     // mark customer_code for check after close modal
                 $('#modal_form').modal();                       // open popup (modal)
@@ -113,9 +142,9 @@ $(document).ready( function () {
                     rows += `
                     <tr>
                         <td>${i++}</td>
-                        <td><a class='a_click' href='#'>${product.code}</a></td>
-                        <td>${product.name}</td>
-                        <td>${formatNumber(product.units)}</td>
+                        <td><a class='a_click' href='#'>${product.product_code}</a></td>
+                        <td>${product.product_name}</td>
+                        <td>${formatNumber(product.price)}</td>
                         <td class='hide'></td>
                     </tr>`;
                 });
@@ -132,7 +161,42 @@ $(document).ready( function () {
         });
     });
 
-    // After click link in Model (popup), Return value of product_code, customer_code, invoice_no to main form
+    /* search payment, load payment list to Modal and show popup */
+    /* when click button magnifying glass after payment_method in table */
+    $('.search_payment_method').click(function () {
+        $(this).parents('tr').find('.order_no').html('*');  // mark row number with '*' for return value after close modal
+
+        $.ajax({                                        // call backend payment/list
+            url:  'payment/list',
+            type:  'get',
+            dataType:  'json',
+            success: function  (data) {
+                let rows =  '';
+                var i = 1;
+                data.payments.forEach(payment => {       // loop each result of payments to create table rows
+                    rows += `
+                    <tr>
+                        <td>${i++}</td>
+                        <td><a class='a_click' href='#'>${payment.payment_method}</a></td>
+                        <td>${payment.description}</td>
+                        <td></td>
+                        <td class='hide'></td>
+                    </tr>`;
+                });
+                $('#table_modal > tbody').html(rows);       // set new table rows to table body (tbody) of popup
+
+                $('#model_header_1').text('Payment Method');      // set header of popup
+                $('#model_header_2').text('Description');
+                $('#model_header_3').text('Note');
+
+                
+                $('#txt_modal_param').val('payment_method');      // mark payment_method for check after close modal
+                $('#modal_form').modal();                       // open popup
+            },
+        });
+    });
+
+    // After click link in Model (popup), Return value of product_code, customer_code, order_code to main form
     $('body').on('click', 'a.a_click', function() {
         var code = $(this).parents('tr').find('td:nth-child(2)').children().html();
         var name = $(this).parents('tr').find('td:nth-child(3)').html();
@@ -156,10 +220,12 @@ $(document).ready( function () {
         } else if ($('#txt_modal_param').val() == 'customer_code') {
             $('#txt_CustomerCode').val(code);
             $('#txt_CustomerName').val(name);
-        } else if ($('#txt_modal_param').val() == 'invoice_no') {
-            $('#txt_InvoiceNo').val(code);
-            $('#txt_InvoiceDate').val(name);
+        } else if ($('#txt_modal_param').val() == 'payment') {
+            $('#txt_PaymentMethod').val(code);
+        } else if ($('#txt_modal_param').val() == 'order_code') {
+            $('#txt_OrderCode').val(code);
             $('#txt_CustomerCode').val(note);
+            $('#txt_PaymentMethod').val(option);
             $('#txt_CustomerCode').change();
 
             get_invoice_detail(code);
@@ -195,7 +261,7 @@ $(document).ready( function () {
                     rows += `
                     <tr>
                         <td>${i++}</td>
-                        <td><a class='a_click' href='#'>${invoice.invoice_no}</a></td>
+                        <td><a class='a_click' href='#'>${invoice.order_code}</a></td>
                         <td>${invoice_date}</td>
                         <td>${invoice.customer_code_id}</td>
                         <td class='hide'></td>
@@ -207,7 +273,7 @@ $(document).ready( function () {
                 $('#model_header_2').text('Invoice Date');
                 $('#model_header_3').text('Customer Code');
 
-                $('#txt_modal_param').val('invoice_no');    // mark invoice_no for check after close modal
+                $('#txt_modal_param').val('order_code');    // mark order_code for check after close modal
                 $('#modal_form').modal();                   // open popup
             },
         });        
@@ -227,7 +293,7 @@ $(document).ready( function () {
             $('#txt_InvoiceDate').focus();
             return false;
         }
-        if ($('#txt_InvoiceNo').val() == '<new>') {                 // check invoice no in form, if invoice no = <new> then call create otherwise call update
+        if ($('#txt_OrderCode').val() == '<new>') {                 // check invoice no in form, if invoice no = <new> then call create otherwise call update
             var token = $('[name=csrfmiddlewaretoken]').val();      // get django security code
                   
             $.ajax({                                                // call backend /invoice/create
@@ -241,7 +307,7 @@ $(document).ready( function () {
                         console.log(data.error);
                         alert('การบันทึกล้มเหลว');
                     } else {
-                        $('#txt_InvoiceNo').val(data.invoice.invoice_no)    // SAVE success, show new invoice no
+                        $('#txt_OrderCode').val(data.invoice.order_code)    // SAVE success, show new invoice no
                         alert('บันทึกสำเร็จ');
                     }                    
                 },
@@ -252,7 +318,7 @@ $(document).ready( function () {
             $.ajax({                                                // call backend /invoice/update
                 url:  '/invoice/update',
                 type:  'post',
-                data: $('#form_invoice').serialize() + "&lineitem=" +lineitem_to_json() + "&invoice_no=" + $('#txt_InvoiceNo').val(),
+                data: $('#form_invoice').serialize() + "&lineitem=" +lineitem_to_json() + "&order_code=" + $('#txt_OrderCode').val(),
                 headers: { "X-CSRFToken": token },
                 dataType:  'json',
                 success: function  (data) {
@@ -269,16 +335,16 @@ $(document).ready( function () {
 
     /* Click button 'DELETE', call backend /invoice/delete */
     $('#btnDelete').click(function () {
-        if ($('#txt_InvoiceNo').val() == '<new>') {
+        if ($('#txt_OrderCode').val() == '<new>') {
             alert ('ไม่สามารถลบ Invoice ใหม่ได้');
             return false;
         }
-        if (confirm ("คุณต้องการลบ Invoice No : '" + $('#txt_InvoiceNo').val() + "' ")) {
-            console.log('Delete ' + $('#txt_InvoiceNo').val());
+        if (confirm ("คุณต้องการลบ Invoice No : '" + $('#txt_OrderCode').val() + "' ")) {
+            console.log('Delete ' + $('#txt_OrderCode').val());
             var token = $('[name=csrfmiddlewaretoken]').val();          // get django security code
             $.ajax({                                                    // call backend /invoice/delete
                 url:  '/invoice/delete',
-                data: 'invoice_no=' + $('#txt_InvoiceNo').val(),
+                data: 'order_code=' + $('#txt_OrderCode').val(),
                 type:  'post',
                 headers: { "X-CSRFToken": token },
                 dataType:  'json',
@@ -291,10 +357,10 @@ $(document).ready( function () {
 
     /* Click button 'PRINT', open new tab of browser with /invoice/reprot/<invpoce_no> */
     $('#btnPrint').click(function () {
-        if ($('#txt_InvoiceNo').val() == '<new>') {
+        if ($('#txt_OrderCode').val() == '<new>') {
             return false;
         }
-        window.open('/invoice/report/' + $('#txt_InvoiceNo').val());
+        window.open('/invoice/report/' + $('#txt_OrderCode').val());
     });
 
     /* Start from */
@@ -325,10 +391,10 @@ function lineitem_to_json () {
     return JSON.stringify(obj);                                     // return object in JSON format
 }
 
-/* get invoice detail from backend with invoice_no and fill to the form */
-function get_invoice_detail (invoice_no) {
+/* get invoice detail from backend with order_code and fill to the form */
+function get_invoice_detail (order_code) {
     $.ajax({                                                            // call backend /invoice/detail/IN100/22
-        url:  '/invoice/detail/' + encodeURIComponent(invoice_no),
+        url:  '/invoice/detail/' + encodeURIComponent(order_code),
         type:  'get',
         dataType:  'json',
         success: function  (data) {
@@ -384,8 +450,8 @@ function re_calculate_total_price () {
 
 /* Reset form to original form */
 function reset_form() {
-    $('#txt_InvoiceNo').attr("disabled", "disabled");
-    $('#txt_InvoiceNo').val('<new>');
+    $('#txt_OrderCode').attr("disabled", "disabled");
+    $('#txt_OrderCode').val('<new>');
 
     reset_table();
     
@@ -450,3 +516,4 @@ var numberRegex = /^-?\d*\.?\d*$/
 // A few jQuery helpers for exporting only
 jQuery.fn.pop = [].pop;
 jQuery.fn.shift = [].shift;
+

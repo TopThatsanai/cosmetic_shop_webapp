@@ -15,53 +15,9 @@ import json
 import re
 
 # Create your views here.
-def index(request):
+def Cart(request):
     data = {}
-    return render(request, 'index.html', data)
-
-def signup(request):
-    data = {}
-    return render(request, 'sign_up.html', data)
-
-def signin(request):
-    data ={}
-    return render(request, 'sign_in.html', data)
-
-def Promotion(request):
-    data = {}
-    return render(request, 'promotion.html', data)
-
-def lipstick(request):
-    data={}
-    return render(request, 'lipstick.html', data)
-
-def eyeLiner(request):
-    data={}
-    return render(request, 'eyeliner.html', data)
-
-def mascara(request):
-    data={}
-    return render(request, 'mascara.html', data)
-
-def eyebrownpencil(request):
-    data={}
-    return render(request, 'eyebrown_pencil.html', data)
-
-def powderpuff(request):
-    data={}
-    return render(request, 'powder_puff.html', data)
-
-def foundation(request):
-    data={}
-    return render(request, 'foundation.html', data)
-
-def gucci(request):
-    data= {}
-    return render(request, 'gucci.html', data)
-
-# def Cart(request):
-#     data = {}
-#     return render(request, 'cart_test.html', data)
+    return render(request, 'invoice.html', data)
 
 class CustomerList(View):
     def get(self, request):
@@ -90,6 +46,14 @@ class CustomerDetail(View):
 class PaymentList(View):
     def get(self, request):
         payments = list(payment.objects.all().values())
+        data = dict()
+        data['payments'] = payments
+
+        return JsonResponse(data)
+
+class PaymentDetail(View):
+    def get(self, request, payment_method):
+        payments = list(payment.objects.filter(payment_method=payment_method).values())
         data = dict()
         data['payments'] = payments
 
@@ -126,4 +90,3 @@ class OrderDetail(View):
         data['orders'] = orders
 
         return JsonResponse(data)
-

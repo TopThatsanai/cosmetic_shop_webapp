@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from cosmetic import views
+from order import views as order_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,11 +33,12 @@ urlpatterns = [
     path('Foundation', views.foundation, name='foundation'),
     path('Promotion', views.Promotion, name = 'promotion'),
     path('Gucci', views.gucci, name = 'gucci'),
-    path('cart', views.Cart, name = 'cart'),
+    path('cart', order_views.Cart, name = 'cart'),
     path('product/list', views.ProductList.as_view(), name='product_list'),
     path('customer/list', views.CustomerList.as_view(),name='customer_list'),
     path('customer/detail/<customer_code>', views.CustomerDetail.as_view(), name='customer_detial'),
     path('payment/list', views.PaymentList.as_view(), name='payment_list'),
+    path('payment/detail/<payment_method>', order_views.PaymentDetail.as_view(), name='payment_detail'),
     path('deliverly/list', views.DeliveriyList.as_view(), name='deliverly_list'),
     path('productWarehouse/list', views.WarehouseList.as_view(), name='productWarehouse_list'),
     path('order/list', views.OrderList.as_view(), name='order_list'),
