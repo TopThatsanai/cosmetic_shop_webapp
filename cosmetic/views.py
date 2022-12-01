@@ -19,14 +19,6 @@ def index(request):
     data = {}
     return render(request, 'index.html', data)
 
-def signup(request):
-    data = {}
-    return render(request, 'sign_up.html', data)
-
-def signin(request):
-    data ={}
-    return render(request, 'sign_in.html', data)
-
 def Promotion(request):
     data = {}
     return render(request, 'promotion.html', data)
@@ -54,10 +46,6 @@ def powderpuff(request):
 def foundation(request):
     data={}
     return render(request, 'foundation.html', data)
-
-def gucci(request):
-    data= {}
-    return render(request, 'gucci.html', data)
 
 # def Cart(request):
 #     data = {}
@@ -95,11 +83,11 @@ class PaymentList(View):
 
         return JsonResponse(data)
 
-class DeliveriyList(View):
+class DeliveryList(View):
     def get(self, request):
-        deliverlys = list(delivery.objects.all().values())
+        deliverys = list(delivery.objects.all().values())
         data = dict()
-        data['deliverlys'] = deliverlys
+        data['deliverys'] = deliverys
 
         return JsonResponse(data)
 
@@ -111,17 +99,17 @@ class WarehouseList(View):
 
         return JsonResponse(data)
 
-class OrderList(View):
+class InvoiceList(View):
     def get(self, request):
-        orders = list(order.objects.all().values())
+        orders = list(invoice.objects.all().values())
         data = dict()
         data['orders'] = orders
 
         return JsonResponse(data)
 
-class OrderDetail(View):
-    def get(self, request, order_code):
-        orders = list(order.objects.filter(order_code=order_code).values())
+class InvoiceDetail(View):
+    def get(self, request, invoice_no):
+        orders = list(invoice.objects.filter(invoice_no=invoice_no).values())
         data = dict()
         data['orders'] = orders
 

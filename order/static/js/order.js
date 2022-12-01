@@ -1,17 +1,17 @@
 
 var ROW_NUMBER = 5;
 
-$(document).ready( function () {
+$(document).ready(function () {
 
     // /* set up text box inovice data to datepicker, it popup calendar after click text box */
-    // $("#txt_InvoiceDate").datepicker({ 
-    //     dateFormat: 'dd/mm/yy' 
-    // });
-    
+    $("#txt_InvoiceDate").datepicker({ 
+        dateFormat: 'dd/mm/yy' 
+    });
+
     // /* When click button calendar, call datepicker show, it popup calendar after click  button */
-    // $('#btn_InvoiceDate').click(function() {
-    //     $('#txt_InvoiceDate').datepicker('show');
-    // });
+    $('#btn_InvoiceDate').click(function() {
+        $('#txt_InvoiceDate').datepicker('show');
+    });
 
     /* Add one row to table (in last row), When click button '+' in header of table */
     $('.table-add').click(function () {
@@ -29,7 +29,7 @@ $(document).ready( function () {
 
         // Check number of row, if number of row < 9 then add one row
         // 9 = default row (5) + header (1) + footer (3)
-        if ($('#table_main tr').length <= (ROW_NUMBER + 1 + 3)) {   
+        if ($('#table_main tr').length <= (ROW_NUMBER + 1 + 3)) {
             add_last_one_row();
         }
         re_order_no();                          // Call re_order_no to re-order item_no (order_no)
@@ -37,13 +37,13 @@ $(document).ready( function () {
     });
 
     /* Check input on table are corrected format, if not correct use last value */
-    $('table').on('focusin', 'td[contenteditable]', function() {
+    $('table').on('focusin', 'td[contenteditable]', function () {
         $(this).data('val', $(this).html());                    // keep value in table before change
     }).on('keypress', 'td[contenteditable]', function (e) {
         if (e.keyCode == 13) {
             return false;
         }
-    }).on('focusout', 'td[contenteditable]', function() {
+    }).on('focusout', 'td[contenteditable]', function () {
         var prev = $(this).data('val');                         // get last keep value in table after change
         var data = $(this).html();                              // get changed value
         if (!numberRegex.test(data)) {                          // check changed value correct format Ex 1,000.00
@@ -55,14 +55,14 @@ $(document).ready( function () {
     });
 
     /* Get Customer Name when type in text box customer code */
-    $('#txt_CustomerCode').change (function () {
+    $('#txt_CustomerCode').change(function () {
         var customer_code = $(this).val().trim();       // get customer_code from text box
 
         $.ajax({                                        // call backend /customer/detail/<customer_code>
-            url:  '/customer/detail/' + customer_code,
-            type:  'get',
-            dataType:  'json',
-            success: function  (data) {
+            url: '/customer/detail/' + customer_code,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
                 if (data.customers.length > 0) {        // check data not empty customer
                     $('#txt_CustomerCode').val(data.customers[0].customer_code);    // put to text box
                     $('#txt_CustomerName').val(data.customers[0].fname);             // put to text box (label)
@@ -77,19 +77,45 @@ $(document).ready( function () {
     });
 
     /* Get Customer Name when type in text box customer code */
-    $('#txt_PaymentMethod').change (function () {
+    $('#txt_PaymentMethod').change(function () {
         var payment_method = $(this).val().trim();
 
         $.ajax({
-            url:  '/payment/detail/' + payment_method,
-            type:  'get',
-            dataType:  'json',
-            success: function  (data) {
-                // $('#txt_PaymentMethodCode').val(data.payments[0].payment_method);
-                $('#txt_PaymentMethod').val(data.payments[0].description);
+            url: '/payment/detail/' + payment_method,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (data.payments.length > 0) {
+                    $('#txt_PaymentMethodCode').val(data.payments[0].payment_method);
+                    $('#txt_PaymentMethod').val(data.payments[0].description);
+                } else {
+                    $('#txt_PaymentMethod').val('');    // if can't find customer_name, reset text box
+                }
             },
             error: function (xhr, status, error) {
                 $('#txt_PaymentMethod').val('');
+            }
+        });
+    });
+
+    /* Get Delivery when type in text box Delivery */
+    $('#txt_Delivery').change(function () {
+        var delivery_type = $(this).val().trim();
+
+        $.ajax({
+            url: '/delivery/detail/' + delivery_type,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (data.deliverys.length > 0) {
+                    $('#txt_DeliveryType').val(data.deliverys[0].delivery_type);
+                    $('#txt_Delivery').val(data.deliverys[0].description);
+                } else {
+                    $('#txt_Delivery').val('');    // if can't find customer_name, reset text box
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#txt_Delivery').val('');
             }
         });
     });
@@ -98,11 +124,11 @@ $(document).ready( function () {
     /* when click button magnifying glass after Customer Code */
     $('.search_customer_code').click(function () {
         $.ajax({
-            url:  '/customer/list',                     // call backend /customer/list
-            type:  'get',
-            dataType:  'json',
-            success: function  (data) {
-                let rows =  '';
+            url: '/customer/list',                     // call backend /customer/list
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                let rows = '';
                 var i = 1;
                 data.customers.forEach(customer => {    // loop each result of customers to create table rows
                     rows += `
@@ -123,7 +149,7 @@ $(document).ready( function () {
                 $('#txt_modal_param').val('customer_code');     // mark customer_code for check after close modal
                 $('#modal_form').modal();                       // open popup (modal)
             },
-        });        
+        });
     });
 
     /* search product code, load product list to Modal and show popup */
@@ -132,11 +158,11 @@ $(document).ready( function () {
         $(this).parents('tr').find('.order_no').html('*');  // mark row number with '*' for return value after close modal
 
         $.ajax({                                        // call backend /product/list
-            url:  '/product/list',
-            type:  'get',
-            dataType:  'json',
-            success: function  (data) {
-                let rows =  '';
+            url: '/product/list',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                let rows = '';
                 var i = 1;
                 data.products.forEach(product => {       // loop each result of products to create table rows
                     rows += `
@@ -154,7 +180,7 @@ $(document).ready( function () {
                 $('#model_header_2').text('Product Name');
                 $('#model_header_3').text('Unit Price');
 
-                
+
                 $('#txt_modal_param').val('product_code');      // mark product_code for check after close modal
                 $('#modal_form').modal();                       // open popup
             },
@@ -167,11 +193,11 @@ $(document).ready( function () {
         $(this).parents('tr').find('.order_no').html('*');  // mark row number with '*' for return value after close modal
 
         $.ajax({                                        // call backend payment/list
-            url:  'payment/list',
-            type:  'get',
-            dataType:  'json',
-            success: function  (data) {
-                let rows =  '';
+            url: 'payment/list',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                let rows = '';
                 var i = 1;
                 data.payments.forEach(payment => {       // loop each result of payments to create table rows
                     rows += `
@@ -189,15 +215,50 @@ $(document).ready( function () {
                 $('#model_header_2').text('Description');
                 $('#model_header_3').text('Note');
 
-                
+
                 $('#txt_modal_param').val('payment_method');      // mark payment_method for check after close modal
                 $('#modal_form').modal();                       // open popup
             },
         });
     });
 
-    // After click link in Model (popup), Return value of product_code, customer_code, order_code to main form
-    $('body').on('click', 'a.a_click', function() {
+    /* search delivery, load delivery list to Modal and show popup */
+    /* when click button magnifying glass after delivery_type in table */
+    $('.search_delivery_type').click(function () {
+        $(this).parents('tr').find('.order_no').html('*');  // mark row number with '*' for return value after close modal
+
+        $.ajax({                                        // call backend payment/list
+            url: 'delivery/list',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                let rows = '';
+                var i = 1;
+                data.deliverys.forEach(delivery => {       // loop each result of payments to create table rows
+                    rows += `
+                    <tr>
+                        <td>${i++}</td>
+                        <td><a class='a_click' href='#'>${delivery.delivery_type}</a></td>
+                        <td>${delivery.description}</td>
+                        <td></td>
+                        <td class='hide'></td>
+                    </tr>`;
+                });
+                $('#table_modal > tbody').html(rows);       // set new table rows to table body (tbody) of popup
+
+                $('#model_header_1').text('Delivery Type');      // set header of popup
+                $('#model_header_2').text('Description');
+                $('#model_header_3').text('Note');
+
+
+                $('#txt_modal_param').val('delivery_type');      // mark payment_method for check after close modal
+                $('#modal_form').modal();                       // open popup
+            },
+        });
+    });
+
+    // After click link in Model (popup), Return value of product_code, customer_code, invoice_no to main form
+    $('body').on('click', 'a.a_click', function () {
         var code = $(this).parents('tr').find('td:nth-child(2)').children().html();
         var name = $(this).parents('tr').find('td:nth-child(3)').html();
         var note = $(this).parents('tr').find('td:nth-child(4)').html();
@@ -205,25 +266,27 @@ $(document).ready( function () {
 
         if ($('#txt_modal_param').val() == 'product_code') {
             // Loop each in data table
-            $("#table_main tbody tr").each(function() {
+            $("#table_main tbody tr").each(function () {
                 // Return data in row number = * (jquery mark * before popup (modal) )
                 if ($(this).find('.order_no').html() == '*') {
                     // return selected product detail (code,name,units) to table row
                     $(this).find('.project_code_1 > span').html(code);
                     $(this).find('.product_name').html(name);
-                    $(this).find('.unit_price').html(note);
+                    $(this).find('.price').html(note);
                     $(this).find('.quantity').html("1");           // default quantiy is '1'
                 }
             });
-            
+
             re_calculate_total_price();
         } else if ($('#txt_modal_param').val() == 'customer_code') {
             $('#txt_CustomerCode').val(code);
             $('#txt_CustomerName').val(name);
-        } else if ($('#txt_modal_param').val() == 'payment') {
+        } else if ($('#txt_modal_param').val() == 'payment_method') {
             $('#txt_PaymentMethod').val(code);
-        } else if ($('#txt_modal_param').val() == 'order_code') {
-            $('#txt_OrderCode').val(code);
+        } else if ($('#txt_modal_param').val() == 'delivery_type') {
+            $('#txt_Delivery').val(code);
+        } else if ($('#txt_modal_param').val() == 'invoice_no') {
+            $('#txt_InvoiceNo').val(code);
             $('#txt_CustomerCode').val(note);
             $('#txt_PaymentMethod').val(option);
             $('#txt_CustomerCode').change();
@@ -248,35 +311,32 @@ $(document).ready( function () {
     /* Click button 'EDIT', load invoice list to modal */
     $('#btnEdit').click(function () {
         $.ajax({                                        // call backend /invoice/list
-            url:  '/invoice/list',
-            type:  'get',
-            dataType:  'json',
-            success: function  (data) {
-                let rows =  '';
+            url: '/invoice/list',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                let rows = '';
                 var i = 1;
                 data.invoices.forEach(invoice => {      // loop each result of invoices to create table rows
-                    var invoice_date = invoice.date;
-                    // Change format date from 01-12-2022 -> 01/12/2022
-                    invoice_date = invoice_date.slice(0,10).split('-').reverse().join('/');
                     rows += `
                     <tr>
                         <td>${i++}</td>
-                        <td><a class='a_click' href='#'>${invoice.order_code}</a></td>
-                        <td>${invoice_date}</td>
+                        <td><a class='a_click' href='#'>${invoice.invoice_no}</a></td>
                         <td>${invoice.customer_code_id}</td>
+                        <td></td>
                         <td class='hide'></td>
                     </tr>`;
                 });
                 $('#table_modal > tbody').html(rows);      // set new table rows to table body (tbody) of popup
 
                 $('#model_header_1').text('Invoice No');    // set header of popup
-                $('#model_header_2').text('Invoice Date');
-                $('#model_header_3').text('Customer Code');
+                $('#model_header_2').text('Customer Code');
+                $('#model_header_3').text('Note');
 
-                $('#txt_modal_param').val('order_code');    // mark order_code for check after close modal
+                $('#txt_modal_param').val('invoice_no');    // mark invoice_no for check after close modal
                 $('#modal_form').modal();                   // open popup
             },
-        });        
+        });
     });
 
     /* Click button 'SAVE', call /invoice/create or /invoice/update */
@@ -287,98 +347,92 @@ $(document).ready( function () {
             $('#txt_CustomerCode').focus();
             return false;
         }
-        var invoice_date = $('#txt_InvoiceDate').val().trim();      // get invoice data from text box
-        if (!dateRegex.test(invoice_date)) {                        // check invoice data is correct format DD/MM/YYYY
-            alert('กรุณาระบุวันที่ ให้ถูกต้อง');
-            $('#txt_InvoiceDate').focus();
-            return false;
-        }
-        if ($('#txt_OrderCode').val() == '<new>') {                 // check invoice no in form, if invoice no = <new> then call create otherwise call update
+        if ($('#txt_InvoiceNo').val() == '<new>') {                 // check invoice no in form, if invoice no = <new> then call create otherwise call update
             var token = $('[name=csrfmiddlewaretoken]').val();      // get django security code
-                  
+
             $.ajax({                                                // call backend /invoice/create
-                url:  '/invoice/create',
-                type:  'post',
-                data: $('#form_invoice').serialize() + "&lineitem=" +lineitem_to_json(),
+                url: '/invoice/create',
+                type: 'post',
+                data: $('#form_invoice').serialize() + "&lineitem=" + lineitem_to_json(),
                 headers: { "X-CSRFToken": token },
-                dataType:  'json',
-                success: function  (data) {
+                dataType: 'json',
+                success: function (data) {
                     if (data.error) {                               // if backend return error message, log it
                         console.log(data.error);
                         alert('การบันทึกล้มเหลว');
                     } else {
-                        $('#txt_OrderCode').val(data.invoice.order_code)    // SAVE success, show new invoice no
+                        $('#txt_InvoiceNo').val(data.invoice.invoice_no)    // SAVE success, show new invoice no
                         alert('บันทึกสำเร็จ');
-                    }                    
+                    }
                 },
-            });  
+            });
         } else {
             var token = $('[name=csrfmiddlewaretoken]').val();      // get django security code
 
             $.ajax({                                                // call backend /invoice/update
-                url:  '/invoice/update',
-                type:  'post',
-                data: $('#form_invoice').serialize() + "&lineitem=" +lineitem_to_json() + "&order_code=" + $('#txt_OrderCode').val(),
+                url: '/invoice/update',
+                type: 'post',
+                data: $('#form_invoice').serialize() + "&lineitem=" + lineitem_to_json() + "&invoice_no=" + $('#txt_InvoiceNo').val(),
                 headers: { "X-CSRFToken": token },
-                dataType:  'json',
-                success: function  (data) {
+                dataType: 'json',
+                success: function (data) {
                     if (data.error) {                           // if backend return error message, log it
                         console.log(data.error);
                         alert('การบันทึกล้มเหลว');
-                    } else {            
+                    } else {
                         alert('บันทึกสำเร็จ');                      // SAVE success, show popup message
                     }
                 },
-            }); 
+            });
         }
     });
 
     /* Click button 'DELETE', call backend /invoice/delete */
     $('#btnDelete').click(function () {
-        if ($('#txt_OrderCode').val() == '<new>') {
-            alert ('ไม่สามารถลบ Invoice ใหม่ได้');
+        if ($('#txt_InvoiceNo').val() == '<new>') {
+            alert('ไม่สามารถลบ Invoice ใหม่ได้');
             return false;
         }
-        if (confirm ("คุณต้องการลบ Invoice No : '" + $('#txt_OrderCode').val() + "' ")) {
-            console.log('Delete ' + $('#txt_OrderCode').val());
+        if (confirm("คุณต้องการลบ Invoice No : '" + $('#txt_InvoiceNo').val() + "' ")) {
+            console.log('Delete ' + $('#txt_InvoiceNo').val());
             var token = $('[name=csrfmiddlewaretoken]').val();          // get django security code
             $.ajax({                                                    // call backend /invoice/delete
-                url:  '/invoice/delete',
-                data: 'order_code=' + $('#txt_OrderCode').val(),
-                type:  'post',
+                url: '/invoice/delete',
+                data: 'invoice_no=' + $('#txt_InvoiceNo').val(),
+                type: 'post',
                 headers: { "X-CSRFToken": token },
-                dataType:  'json',
-                success: function  (data) {
+                dataType: 'json',
+                success: function (data) {
                     reset_form();                                       // after delete success call reset_form
                 },
-            });            
+            });
         }
     });
 
     /* Click button 'PRINT', open new tab of browser with /invoice/reprot/<invpoce_no> */
     $('#btnPrint').click(function () {
-        if ($('#txt_OrderCode').val() == '<new>') {
+        if ($('#txt_InvoiceNo').val() == '<new>') {
             return false;
         }
-        window.open('/invoice/report/' + $('#txt_OrderCode').val());
+        window.open('/invoice/report/' + $('#txt_InvoiceNo').val());
     });
 
     /* Start from */
-    reset_form ();
+    reset_form();
 });
 
 /* read all data inside table and convert to json string */
 /* return json string of line item (all data inside table) */
-function lineitem_to_json () {
+function lineitem_to_json() {
     var rows = [];                                                  // create empty array 'rows'
     var i = 0;
-    $("#table_main tbody tr").each(function(index) {                // loop each table data
+    $("#table_main tbody tr").each(function (index) {                // loop each table data
         if ($(this).find('.project_code_1 > span').html() != '') {  // check row have data
             rows[i] = {};                                           // create empty object in rows[index]
-            rows[i]["item_no"] = (i+1);                             // copy data from table row to variable 'rows'
+            rows[i]["item_no"] = (i + 1);                             // copy data from table row to variable 'rows'
             rows[i]["product_code"] = $(this).find('.project_code_1 > span').html();
             rows[i]["product_name"] = $(this).find('.product_name').html();
-            rows[i]["unit_price"] = $(this).find('.unit_price').html();
+            rows[i]["price"] = $(this).find('.price').html();
             rows[i]["quantity"] = $(this).find('.quantity').html();
             rows[i]["extended_price"] = $(this).find('.extended_price').html();
             i++;
@@ -391,25 +445,30 @@ function lineitem_to_json () {
     return JSON.stringify(obj);                                     // return object in JSON format
 }
 
-/* get invoice detail from backend with order_code and fill to the form */
-function get_invoice_detail (order_code) {
+/* get invoice detail from backend with invoice_no and fill to the form */
+function get_invoice_detail(invoice_no) {
     $.ajax({                                                            // call backend /invoice/detail/IN100/22
-        url:  '/invoice/detail/' + encodeURIComponent(order_code),
-        type:  'get',
-        dataType:  'json',
-        success: function  (data) {
+        url: '/invoice/detail/' + encodeURIComponent(invoice_no),
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
             console.log(data);
 
-            reset_table();                                              // reset table
-            for(var i=ROW_NUMBER;i<data.invoicelineitem.length;i++) {   // generate row by number of result
+            reset_table();
+            $("#txt_CustomerCode").val(data.invoice[0].customer_code)
+            $("#txt_CustomerName").val(data.invoice[0].customer_code__fname) 
+            $("#txt_PaymentMethod").val(data.invoice[0].payment_method) 
+            $("#txt_Delivery").val(data.invoice[0].delivery_type) 
+                                                          // reset table
+            for (var i = ROW_NUMBER; i < data.invoicelineitem.length; i++) {   // generate row by number of result
                 add_last_one_row();
             }
             var i = 0;
-            $("#table_main tbody tr").each(function() {                 // fill result data to each row
+            $("#table_main tbody tr").each(function () {                 // fill result data to each row
                 if (i < data.invoicelineitem.length) {
                     $(this).find('.project_code_1 > span').html(data.invoicelineitem[i].product_code);
-                    $(this).find('.product_name').html(data.invoicelineitem[i].product_code__name);
-                    $(this).find('.unit_price').html(data.invoicelineitem[i].unit_price);
+                    $(this).find('.product_name').html(data.invoicelineitem[i].product_code__product_name);
+                    $(this).find('.price').html(data.invoicelineitem[i].price);
                     $(this).find('.quantity').html(data.invoicelineitem[i].quantity);
                 }
                 i++;
@@ -420,20 +479,20 @@ function get_invoice_detail (order_code) {
 }
 
 /* Loop each data table and calculate extended_price, total_price, vat, amount due */
-function re_calculate_total_price () {
+function re_calculate_total_price() {
     var total_price = 0;
 
     // Loop each in Data Table
-    $("#table_main tbody tr").each(function() {
+    $("#table_main tbody tr").each(function () {
         //get product_code from Table Row in Table
         var product_code = $(this).find('.project_code_1 > span').html().trim();
         //console.log (product_code);
         if (product_code != '') {
-            var unit_price = $(this).find('.unit_price').html().replace(/,/g, '');
-            $(this).find('.unit_price').html(formatNumber((unit_price)));
+            var unit_price = $(this).find('.price').html().replace(/,/g, '');
+            $(this).find('.price').html(formatNumber((unit_price)));
             var quantity = $(this).find('.quantity').html();
             $(this).find('.quantity').html(parseInt(quantity));
-        
+
             var extended_price = unit_price * quantity;
             $(this).find('.extended_price').html(formatNumber(extended_price));
             total_price += extended_price;
@@ -450,15 +509,18 @@ function re_calculate_total_price () {
 
 /* Reset form to original form */
 function reset_form() {
-    $('#txt_OrderCode').attr("disabled", "disabled");
-    $('#txt_OrderCode').val('<new>');
+    $('#txt_InvoiceNo').attr("disabled", "disabled");
+    $('#txt_InvoiceNo').val('<new>');
 
     reset_table();
-    
-    $('#txt_InvoiceDate').val(new Date().toJSON().slice(0,10).split('-').reverse().join('/'));
+
+    $('#txt_InvoiceDate').val(new Date().toJSON().slice(0, 10).split('-').reverse().join('/'));
 
     $('#txt_CustomerCode').val('');
     $('#txt_CustomerName').val('');
+
+    $('#txt_PaymentMethod').val('');
+    $('#txt_Delivery').val('');
 
     $('#lbl_TotalPrice').text('0.00');
     $('#lbl_VAT').text('0.00');
@@ -468,41 +530,41 @@ function reset_form() {
 /* Reset Table to original from */
 function reset_table() {
     $('#table_main > tbody').html('');          // Clear body of table (tbody), table will remain header and footer
-    for(var i=1; i<= ROW_NUMBER; i++) {         // Loop 5 times
+    for (var i = 1; i <= ROW_NUMBER; i++) {         // Loop 5 times
         add_last_one_row()                      // Add one row to table
-    }    
+    }
 }
 
 /* Add one row to table */
-function add_last_one_row () {
+function add_last_one_row() {
     $('.table-add').click();                    // Call event click of button '+' in header of table, for add one row
 }
 
 /* Reorder number item_no (order_no) on table */
-function re_order_no () {
+function re_order_no() {
     var order_number = 1;
     // Loop each data table
-    $("#table_main tbody tr").each(function() {         
+    $("#table_main tbody tr").each(function () {
         // set order number to column order_no
-        $(this).find('.order_no').html(order_number);   
+        $(this).find('.order_no').html(order_number);
         order_number++;
     });
 }
 
 /* Format input to display number 2 floating point Ex 1,000.00 */
-function formatNumber (num) {
+function formatNumber(num) {
     if (num === '') return '';
-    num = parseFloat(num); 
+    num = parseFloat(num);
     return num.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 }
 
 /* Check n is integer */
-function isInt(n){
+function isInt(n) {
     return Number(n) === n && n % 1 === 0;
 }
 
 /* Check n is floating point */
-function isFloat(n){
+function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
 

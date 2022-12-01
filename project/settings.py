@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cosmetic',
-    'order'
+    'order',
+    'app_users'
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'Project',
         'USER': 'postgres',
-        'PASSWORD': '7208',
+        'PASSWORD': 'pingptrw2002',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -129,3 +130,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Auth
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"

@@ -45,6 +45,8 @@
         </div>
     </nav>
     <div style="font-size:0;" class="bg-secondary">
+        <input type='image' id='btnNew' src="{% static 'images/newOn.gif' %}" alt="newOn">
+        <input type='image' id='btnEdit' src="{% static 'images/editOn.gif' %}" alt="editOn">
         <input type='image' id='btnPrint' src="{% static 'images/printOn.gif' %}" alt="printOn">
         <input type='image' id='btnSave' src="{% static 'images/saveOn.gif' %}" alt="saveOn">
     </div>
@@ -58,11 +60,24 @@
                         <div class='input-group-prepend'>
                             <div class='input-group-text'>*Order code :</div>
                         </div>
-                        <input type='text' id='txt_OrderCode' name='order_code' class='form-control'
+                        <input type='text' id='txt_InvoiceNo' name='invoice_no' class='form-control'
                             placeholder='Invoice No'>
                     </div>
                 </div>
                 <div class="col-0 col-lg-1"></div>
+                <div class="col-lg-4 col-md-8 col-12 col-auto">
+                    <div class='input-group mb-2'>
+                        <div class='input-group-prepend'>
+                            <div class='input-group-text'>*Order Date :</div>
+                        </div>
+                        <input type='text' id='txt_InvoiceDate' name='date' class='form-control' required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Check this checkbox to continue.</div>
+                        <button type='button' class="btn btn-default" id='btn_InvoiceDate'>
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <br />
             <div class='form-row'>
@@ -84,19 +99,39 @@
                     </div>
                 </div>
             </div>
+            <br />
             <div class='form-row'>
                 <div class="col-lg-4 col-md-8 col-12 col-auto">
                     <div class='input-group mb-2'>
                         <div class='input-group-prepend'>
                             <div class='input-group-text'>*Payment Method:</div>
                         </div>
-                        <input type='text' id='txt_PaymentMethod' name='description' class='form-control'
+                        <input type='text' id='txt_PaymentMethod' name='payment_method' class='form-control'
                             placeholder='Payment Method' required>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Check this checkbox to continue.</div>
                         <button type='button' class="btn btn-default btn-sm search_payment_method">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
+                        <input type='hidden' id='txt_DueDate' name='due_date' />
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class='form-row'>
+                <div class="col-lg-4 col-md-8 col-12 col-auto">
+                    <div class='input-group mb-2'>
+                        <div class='input-group-prepend'>
+                            <div class='input-group-text'>*Delivery:</div>
+                        </div>
+                        <input type='text' id='txt_Delivery' name='delivery_type' class='form-control'
+                            placeholder='Delivery' required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Check this checkbox to continue.</div>
+                        <button type='button' class="btn btn-default btn-sm search_delivery_type">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+
                         <input type='hidden' id='txt_DueDate' name='due_date' />
                     </div>
                 </div>
@@ -129,7 +164,7 @@
                             </button>
                         </td>
                         <td class="col-3 product_name table-warning" scope="row"></td>
-                        <td class="col-2 unit_price" scope="row" pattern="^[0-9]" align="right" contenteditable="true">
+                        <td class="col-2 price" scope="row" pattern="^[0-9]" align="right" contenteditable="true">
                         </td>
                         <td class="col-1 quantity" scope="row" pattern="^[0-9]" align="right" contenteditable="true">
                         </td>
@@ -144,7 +179,7 @@
                 </tbody>
                 <tfoot>
                     <tr class="d-flex">
-                        <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>Total Price : </td>
+                        <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>Sum : </td>
                         <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_TotalPrice'></label>
                         </td>
                         <td class="col-1" align="center"></td>
@@ -157,7 +192,7 @@
                         <input type='hidden' id='txt_VAT' name='vat' />
                     </tr>
                     <tr class="d-flex">
-                        <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>Amount Due : </td>
+                        <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>Total : </td>
                         <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_AmountDue'></label>
                         </td>
                         <td class="col-1" align="center"></td>
