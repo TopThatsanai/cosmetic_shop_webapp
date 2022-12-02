@@ -459,6 +459,7 @@ function get_invoice_detail(invoice_no) {
             $("#txt_CustomerName").val(data.invoice[0].customer_code__fname) 
             $("#txt_PaymentMethod").val(data.invoice[0].payment_method) 
             $("#txt_Delivery").val(data.invoice[0].delivery_type) 
+            $("#txt_InvoiceDate").val(data.invoice[0].date)
                                                           // reset table
             for (var i = ROW_NUMBER; i < data.invoicelineitem.length; i++) {   // generate row by number of result
                 add_last_one_row();
