@@ -29,7 +29,6 @@ urlpatterns = [
     path('invoice/detail/<str:pk>/<str:pk2>', order_views.InvoiceDetail.as_view(), name='order_detial'),
 
     path('invoice/report/<str:pk>/<str:pk2>', order_views.OrderReport.as_view(), name='order_report'),
-    path('invoice/create', order_views.InvoiceCreate.as_view(), name='invoice_create'),
     path('invoice/update', order_views.InvoiceUpdate.as_view(), name='invoice_update'),
     path('invoice/delete', order_views.InvoiceDelete.as_view(), name='invoice_delete'),
 ]

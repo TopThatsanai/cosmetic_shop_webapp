@@ -48,8 +48,8 @@
         <h1 class="text-center">SIGN IN</h1>
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
-            <div class="form-group was-validated">
-                <label class="form-label" for="username">Username :</label>
+            <div class="form-group was-validated mx-5">
+                <label class="form-label" for="username">Username </label>
                 </br>
                 {{form.username}}
                 {{form.username.errors}}
@@ -57,8 +57,8 @@
                     Please enter your username
                 </div>
             </div>
-            <div class="form-group was-validated">
-                <label class="form-label" for="password">Password :</label>
+            <div class="form-group was-validated mx-5">
+                <label class="form-label" for="password">Password </label>
                 </br>
                 {{form.password}}
                 {{form.password.errors}}
@@ -66,7 +66,7 @@
                     Please enter your password
                 </div>
             </div>
-            <button class="btn btn-dark w-100" type="submit">SIGN IN</button>
+            <button class="btn btn-dark w-75 mx-5" type="submit">SIGN IN</button>
         </form>
     </div>
     <script src="static/js/bootstrap.min.js"></script>

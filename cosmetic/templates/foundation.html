@@ -20,7 +20,7 @@
         <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#navbarDropdown">
             <span class="navbar=toggler-icon"></span>
         </button>
-        <div class="mb-2 mt-2 ml-auto">
+        <!-- <div class="mb-2 mt-2 ml-auto">
             <input type="search" class="form-control form-control-sm" list="dataListOptions" placeholder="Search Brand">
             <datalist id="dataListOptions">
                 <option value="Gucci" href="Gucci" class="nav-link " >
@@ -29,7 +29,7 @@
                 <option value="Hermes">
                 <option value="Dior">
             </datalist>
-        </div>
+        </div> -->
     {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto mb-2 mb-sm-0">
             <a href="{% url 'logout' %}">
@@ -112,7 +112,7 @@
                     <h5 class="card-title ml-2 mt-2">$ 2600</h5>
                     <h6 class="card-title ml-2">CHANEL</h6>
                     <p class="card-text ml-2">CHANEL ULTRA LE TEINT</p>
-                    <a href="#" class="btn btn-dark mt-4">Add Cart</a>
+                    <a href="cart" class="btn btn-dark">Go Cart</a>
                 </div>
             </div>
         </div>
@@ -123,7 +123,7 @@
                     <h5 class="card-title ml-2 mt-2">$ 2600</h5>
                     <h6 class="card-title ml-2">DIOR</h6>
                     <p class="card-text ml-2">Dior Forever Skin Glow 24h Hydrating Radiant Foundation</p>
-                    <a href="#" class="btn btn-dark">Add Cart</a>
+                    <a href="cart" class="btn btn-dark">Go Cart</a>
                 </div>
             </div>
         </div>
@@ -134,7 +134,7 @@
                         <h5 class="card-title ml-2 mt-2">$ 2800</h5>
                         <h6 class="card-title ml-2 ">GUCCI</h6>
                         <p class="card-text ml-2">Fluide De Beauté Fini Naturel - Natural Finish Fluid Foundation</p>
-                        <a href="#" class="btn btn-dark">Add Cart</a>
+                        <a href="cart" class="btn btn-dark">Go Cart</a>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                     <h5 class="card-title ml-2 mt-2">$ 2600</h5>
                     <h6 class="card-title ml-2">YSL</h6>
                     <p class="card-text ml-2">ALL HOURS RENOVATION</p>
-                    <a href="#" class="btn btn-dark mt-4">Add Cart</a>
+                    <a href="cart" class="btn btn-dark">Go Cart</a>
                 </div>
             </div>
         </div>

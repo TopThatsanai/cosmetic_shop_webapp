@@ -11,9 +11,6 @@ class  customer(models.Model):
     lname = models.CharField(max_length=20)
     email = models.CharField(max_length=40)
     customer_address = models.CharField(max_length=100)
-    order_code = models.CharField(max_length=10)
-    order_sum_quantity = models.FloatField(null=True)
-    order_total_price = models.FloatField(null=True)
     class Meta:
         db_table = "customer"
         managed = False
@@ -23,9 +20,6 @@ class  customer(models.Model):
 class  delivery(models.Model):
     delivery_type = models.CharField(max_length=50,primary_key=True)
     description = models.CharField(max_length=50)
-    order_code = models.CharField(max_length=10)
-    order_sum_quantity = models.FloatField(null=True)
-    order_total_price = models.FloatField(null=True)
     class Meta:
         db_table = "delivery"
         managed = False
@@ -87,9 +81,6 @@ class invoicelineitem(models.Model):
 class payment(models.Model):
     payment_method = models.CharField(max_length=20, primary_key=True)
     description = models.CharField(max_length=20)
-    order_code = models.CharField(max_length=10)
-    order_sum_quantity = models.FloatField(null=True, blank=True)
-    order_total_price = models.FloatField(null=True, blank=True)
     class Meta:
         db_table = "payment"
         managed = False
