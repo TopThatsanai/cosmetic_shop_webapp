@@ -252,7 +252,7 @@ class InvoiceDelete(View):
         if invoice:
             invoice.delete()
             invoicelineitem.objects.filter(invoice_no=invoice_no).delete()
-            data['message'] = "Invoice Deleted!"
+            data['message'] = "Order Deleted!"
         else:
             data['error'] = "Error!"
 

@@ -390,10 +390,10 @@ $(document).ready(function () {
     /* Click button 'DELETE', call backend /invoice/delete */
     $('#btnDelete').click(function () {
         if ($('#txt_InvoiceNo').val() == '<new>') {
-            alert('ไม่สามารถลบ Invoice ใหม่ได้');
+            alert('ไม่สามารถลบ Order ใหม่ได้');
             return false;
         }
-        if (confirm("คุณต้องการลบ Invoice No : '" + $('#txt_InvoiceNo').val() + "' ")) {
+        if (confirm("คุณต้องการลบ Order code : '" + $('#txt_InvoiceNo').val() + "' ")) {
             console.log('Delete ' + $('#txt_InvoiceNo').val());
             var token = $('[name=csrfmiddlewaretoken]').val();          // get django security code
             $.ajax({                                                    // call backend /invoice/delete
