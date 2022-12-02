@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,18 +10,19 @@
     <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/css/style.css">
 </head>
+
 <body>
-    
+
     <!-- Navbar1 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a href="{% url 'index' %}">
-            <img src="static/img_project/luxury.png" width="130" height="40" alt="">
+                <img src="static/img_project/luxury.png" width="130" height="40" alt="">
             </a>
-        <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#navbarDropdown">
-            <span class="navbar=toggler-icon"></span>
-        </button>
-        <!-- <div class="mb-2 mt-2 ml-auto">
+            <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#navbarDropdown">
+                <span class="navbar=toggler-icon"></span>
+            </button>
+            <!-- <div class="mb-2 mt-2 ml-auto">
             <input type="search" class="form-control form-control-sm" list="dataListOptions" placeholder="Search Brand">
             <datalist id="dataListOptions">
                 <option value="Gucci" href="Gucci" class="nav-link " >
@@ -30,132 +32,147 @@
                 <option value="Dior">
             </datalist>
         </div> -->
-    {% if user.is_authenticated %}
-        <ul class="navbar-nav ml-auto mb-2 mb-sm-0">
-            <a href="{% url 'logout' %}">
-                <button type="button" class="btn btn-dark">Log out</button>
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav ml-auto mb-2 mb-sm-0">
+                <a href="{% url 'logout' %}">
+                    <button type="button" class="btn btn-dark">Log out</button>
+                </a>
+            </ul>
+            <div class="mx-2">
+                <a href="cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor"
+                        class="bi bi-minecart" viewBox="0 0 16 16">
+                        <path
+                            d="M4 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM.115 3.18A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 14 12H2a.5.5 0 0 1-.491-.408l-1.5-8a.5.5 0 0 1 .106-.411zm.987.82 1.313 7h11.17l1.313-7H1.102z" />
+                    </svg>
+                </a>
+            </div>
+            <a class="nav-link">
+                <span>{{ user.username }}</span>
             </a>
-        </ul>
-        <div class="mx-2">
-            <a href="cart">
-            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-minecart" viewBox="0 0 16 16">
-                <path d="M4 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM.115 3.18A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 14 12H2a.5.5 0 0 1-.491-.408l-1.5-8a.5.5 0 0 1 .106-.411zm.987.82 1.313 7h11.17l1.313-7H1.102z"/>
-            </svg>
-            </a>
-        </div>
-        <a class="nav-link">
-            <span>{{ user.username }}</span>
-        </a>
-    {% else %}
-        <ul class="navbar-nav ml-auto mb-2 mb-sm-0">
-            <a href="{% url 'register' %}">
-                <button type="button" class="btn btn-dark">Sign Up</button>
-            </a>
-        </ul>
-        <div class="mx-2">
-            <a href="{% url 'login' %}">
-                <button type="button" class="btn btn-outline-dark">Sign In</button>
-            </a>
-        </div>
-    {% endif %}
+            {% else %}
+            <ul class="navbar-nav ml-auto mb-2 mb-sm-0">
+                <a href="{% url 'register' %}">
+                    <button type="button" class="btn btn-dark">Sign Up</button>
+                </a>
+            </ul>
+            <div class="mx-2">
+                <a href="{% url 'login' %}">
+                    <button type="button" class="btn btn-outline-dark">Sign In</button>
+                </a>
+            </div>
+            {% endif %}
     </nav>
 
     <!-- Navbar2 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-        <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#navbarDropdown">
-            <span class="navbar=toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#navbarDropdown">
+                <span class="navbar=toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="index" class="nav-link" aria-current="page">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Lipstick" class="nav-link " aria-current="page">Lipstick</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Eyeliner" class="nav-link" aria-current="page">Eye Liner</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Mascara" class="nav-link" aria-current="page">Mascara</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Eyebrownpencil" class="nav-link" aria-current="page">Eyebrown pencil</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Powderpuff" class="nav-link" aria-current="page">Powder Puff</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Foundation" class="nav-link active" aria-current="page">Foundation</a>
-                </li>
-                <li class="nav-item">
-                    <a href="Promotion" class="nav-link " aria-current="page">Promotion</a>
-                </li>
-            </ul>
-        </div>
+            <div class="collapse navbar-collapse" id="navbarDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="index" class="nav-link" aria-current="page">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Lipstick" class="nav-link " aria-current="page">Lipstick</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Eyeliner" class="nav-link" aria-current="page">Eye Liner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Mascara" class="nav-link" aria-current="page">Mascara</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Eyebrownpencil" class="nav-link" aria-current="page">Eyebrown pencil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Powderpuff" class="nav-link" aria-current="page">Powder Puff</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Foundation" class="nav-link active" aria-current="page">Foundation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Promotion" class="nav-link " aria-current="page">Promotion</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-    
+
     <!-- image lipstick -->
     <img src="static/img_project/foun.png" class="img-fluid ml-5 d-block" width="250" height="100" alt="">
-    
+
     <!-- card item -->
     <div class="container">
-    <!-- row1 -->
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <img src="static/img_project/foundation/chanel/Screenshot 2022-11-16 232010.jpg" width="100%" height="300" alt="">
-                <div class="card-cody">
-                    <h5 class="card-title ml-2 mt-2">$ 2600</h5>
-                    <h6 class="card-title ml-2">CHANEL</h6>
-                    <p class="card-text ml-2">CHANEL ULTRA LE TEINT</p>
-                    <a href="cart" class="btn btn-dark">Go Cart</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <img src="static/img_project/foundation/dior/Screenshot 2022-11-16 232745.jpg" width="100%" height="300" alt="">
-                <div class="card-cody">
-                    <h5 class="card-title ml-2 mt-2">$ 2600</h5>
-                    <h6 class="card-title ml-2">DIOR</h6>
-                    <p class="card-text ml-2">Dior Forever Skin Glow 24h Hydrating Radiant Foundation</p>
-                    <a href="cart" class="btn btn-dark">Go Cart</a>
-                </div>
-            </div>
-        </div>
+        <!-- row1 -->
+        <div class="row">
             <div class="col-md-3">
                 <div class="card">
-                    <img src="static/img_project/foundation/gucci/Screenshot 2022-11-16 231232.jpg" width="100%" height="300" alt="">
+                    <img src="static/img_project/foundation/chanel/Screenshot 2022-11-16 232010.jpg" width="100%"
+                        height="300" alt="">
+                    <div class="card-cody">
+                        <h5 class="card-title ml-2 mt-2">$ 2600</h5>
+                        <h6 class="card-title ml-2">CHANEL</h6>
+                        <p class="card-text ml-2">CHANEL ULTRA LE TEINT</p>
+                        {% if user.is_authenticated %}
+                        <a href="cart" class="btn btn-dark ">Go Cart</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="static/img_project/foundation/dior/Screenshot 2022-11-16 232745.jpg" width="100%"
+                        height="300" alt="">
+                    <div class="card-cody">
+                        <h5 class="card-title ml-2 mt-2">$ 2600</h5>
+                        <h6 class="card-title ml-2">DIOR</h6>
+                        <p class="card-text ml-2">Dior Forever Skin Glow 24h Hydrating Radiant Foundation</p>
+                        {% if user.is_authenticated %}
+                        <a href="cart" class="btn btn-dark ">Go Cart</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="static/img_project/foundation/gucci/Screenshot 2022-11-16 231232.jpg" width="100%"
+                        height="300" alt="">
                     <div class="card-cody">
                         <h5 class="card-title ml-2 mt-2">$ 2800</h5>
                         <h6 class="card-title ml-2 ">GUCCI</h6>
                         <p class="card-text ml-2">Fluide De Beauté Fini Naturel - Natural Finish Fluid Foundation</p>
-                        <a href="cart" class="btn btn-dark">Go Cart</a>
+                        {% if user.is_authenticated %}
+                        <a href="cart" class="btn btn-dark ">Go Cart</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        <div class="col-md-3">
-            <div class="card">
-                <img src="static/img_project/foundation/ysl/APAC-100124-YSL-3614273593588-LW7-IMAGE1.jpg" width="100%" height="300" alt="">
-                <div class="card-cody">
-                    <h5 class="card-title ml-2 mt-2">$ 2600</h5>
-                    <h6 class="card-title ml-2">YSL</h6>
-                    <p class="card-text ml-2">ALL HOURS RENOVATION</p>
-                    <a href="cart" class="btn btn-dark">Go Cart</a>
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="static/img_project/foundation/ysl/APAC-100124-YSL-3614273593588-LW7-IMAGE1.jpg"
+                        width="100%" height="300" alt="">
+                    <div class="card-cody">
+                        <h5 class="card-title ml-2 mt-2">$ 2600</h5>
+                        <h6 class="card-title ml-2">YSL</h6>
+                        <p class="card-text ml-2">ALL HOURS RENOVATION</p>
+                        {% if user.is_authenticated %}
+                        <a href="cart" class="btn btn-dark ">Go Cart</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    
+
 
     </div>
 
     <script src="static/js/bootstrap.min.js"></script>
     <script src="static/js/personal.js"></script>
 </body>
+
 </html>

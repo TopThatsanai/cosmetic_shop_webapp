@@ -112,7 +112,9 @@
                     <h5 class="card-title ml-2 mt-2">$ 1990</h5>
                     <h6 class="card-title ml-2">CHANEL</h6>
                     <p class="card-text ml-2">BOY DE CHANEL EYEBROW PENCIL</p>
+                    {% if user.is_authenticated %}
                     <a href="cart" class="btn btn-dark ">Go Cart</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -123,7 +125,9 @@
                     <h5 class="card-title ml-2 mt-2">$ 1350</h5>
                     <h6 class="card-title ml-2">DIOR</h6>
                     <p class="card-text ml-2">DIORSHOW KABUKI BROW STYLER</p>
+                    {% if user.is_authenticated %}
                     <a href="cart" class="btn btn-dark ">Go Cart</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -134,7 +138,9 @@
                         <h5 class="card-title ml-2 mt-2">$ 1200</h5>
                         <h6 class="card-title ml-2 ">GUCCI</h6>
                         <p class="card-text ml-2">Crayon Definition Sourcils Powder Eyebrow Pencil</p>
-                        <a href="cart" class="btn btn-dark">Go Cart</a>
+                        {% if user.is_authenticated %}
+                    <a href="cart" class="btn btn-dark ">Go Cart</a>
+                    {% endif %}
                     </div>
                 </div>
             </div>
@@ -145,7 +151,9 @@
                     <h5 class="card-title ml-2 mt-2">$ 1550</h5>
                     <h6 class="card-title ml-2">YSL</h6>
                     <p class="card-text ml-2">Yves Saint Laurent Dessin Des Sourcils Eyebrow</p>
-                    <a href="cart" class="btn btn-dark">Go Cart</a>
+                    {% if user.is_authenticated %}
+                    <a href="cart" class="btn btn-dark ">Go Cart</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
